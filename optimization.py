@@ -41,13 +41,23 @@ def optimize_portfolio(sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,1,1), \
     dates = pd.date_range(sd, ed)  		   	  			  	 		  		  		    	 		 		   		 		  
     prices_all = get_data(syms, dates)  # automatically adds SPY  		   	  			  	 		  		  		    	 		 		   		 		  
     prices = prices_all[syms]  # only portfolio symbols  		   	  			  	 		  		  		    	 		 		   		 		  
-    prices_SPY = prices_all['SPY']  # only SPY, for comparison later  		   	  			  	 		  		  		    	 		 		   		 		  
-  		   	  			  	 		  		  		    	 		 		   		 		  
-    # find the allocations for the optimal portfolio  		   	  			  	 		  		  		    	 		 		   		 		  
-    # note that the values here ARE NOT meant to be correct for a test case  		   	  			  	 		  		  		    	 		 		   		 		  
-    allocs = np.asarray([0.2, 0.2, 0.3, 0.3]) # add code here to find the allocations  		   	  			  	 		  		  		    	 		 		   		 		  
+    prices_SPY = prices_all['SPY']  # only SPY, for comparison later  
+
+    print("\n=========optimize_portfolio()=====================\n")		   	  			  	 		  		  		    	 		 		   		 		  
+    print(prices_all.head(10))
+    print("\n==================================================\n")	
+
+    
+
+    # find the allocations for the optimal portfolio 
+
+    # note that the values here ARE NOT meant to be correct for a test case  
+    # for debugging purpose		   	  			  	 		  		  		    	 		 		   		 		  
+    allocs = np.asarray([0.3, 0.1, 0.1, 0.3, 0.2]) # add code here to find the allocations  		   	  			  	 		  		  		    	 		 		   		 		  
     cr, adr, sddr, sr = [0.25, 0.001, 0.0005, 2.1] # add code here to compute stats  		   	  			  	 		  		  		    	 		 		   		 		  
-  		   	  			  	 		  		  		    	 		 		   		 		  
+    daily_returns = get_daily_returns(allocs, prices)
+
+
     # Get daily portfolio value  		   	  			  	 		  		  		    	 		 		   		 		  
     port_val = prices_SPY # add code here to compute daily portfolio values  		   	  			  	 		  		  		    	 		 		   		 		  
   		   	  			  	 		  		  		    	 		 		   		 		  
@@ -58,7 +68,36 @@ def optimize_portfolio(sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,1,1), \
         pass  		   	  			  	 		  		  		    	 		 		   		 		  
   		   	  			  	 		  		  		    	 		 		   		 		  
     return allocs, cr, adr, sddr, sr  		   	  			  	 		  		  		    	 		 		   		 		  
-  		   	  			  	 		  		  		    	 		 		   		 		  
+
+# short and sweet function that returns the SR from a portfolio
+# for use of tranning specifically
+def get_sr(daily_returns):
+    print("do something")
+
+# returns the cumulative return, average daily return and volatility from a portfolio
+def get_cr_adr_sddr(daily_returns):
+    print("do more")
+
+# returns the daily returns given stock prices and allocations
+def get_daily_returns(allocs, prices):
+
+    cumulative_return = prices.div(prices.iloc[0])
+    allocs_adjusted = cumulative_return.multiply(allocs)
+    daily_returns = allocs_adjusted.sum(axis = 1)
+
+    """
+    print("\n=============get_daily_returns====================\n")	
+    print(allocs)	
+    print(cumulative_return.head(10))
+    print(allocs_adjusted.head(10))
+    print(daily_returns.head(10))
+    print("\n==================================================\n")	
+    """
+
+    return daily_returns	
+
+
+
 def test_code():  		   	  			  	 		  		  		    	 		 		   		 		  
     # This function WILL NOT be called by the auto grader  		   	  			  	 		  		  		    	 		 		   		 		  
     # Do not assume that any variables defined here are available to your function/code  		   	  			  	 		  		  		    	 		 		   		 		  
