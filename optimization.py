@@ -20,9 +20,9 @@ GT honor code violation.
   		   	  			  	 		  		  		    	 		 		   		 		  
 -----do not edit anything above this line---  		   	  			  	 		  		  		    	 		 		   		 		  
   		   	  			  	 		  		  		    	 		 		   		 		  
-Student Name: Tucker Balch (replace with your name)  		   	  			  	 		  		  		    	 		 		   		 		  
-GT User ID: tb34 (replace with your User ID)  		   	  			  	 		  		  		    	 		 		   		 		  
-GT ID: 900897987 (replace with your GT ID)  		   	  			  	 		  		  		    	 		 		   		 		  
+Student Name: Jie Lyu 		   	  			  	 		  		  		    	 		 		   		 		  
+GT User ID: jlyu31  		   	  			  	 		  		  		    	 		 		   		 		  
+GT ID: 903329676  		   	  			  	 		  		  		    	 		 		   		 		  
 """  		   	  			  	 		  		  		    	 		 		   		 		  
   		   	  			  	 		  		  		    	 		 		   		 		  
   		   	  			  	 		  		  		    	 		 		   		 		  
@@ -90,4 +90,11 @@ def test_code():
 if __name__ == "__main__":  		   	  			  	 		  		  		    	 		 		   		 		  
     # This code WILL NOT be called by the auto grader  		   	  			  	 		  		  		    	 		 		   		 		  
     # Do not assume that it will be called  		   	  			  	 		  		  		    	 		 		   		 		  
-    test_code()  		   	  			  	 		  		  		    	 		 		   		 		  
+    test_code()  		   	  			  
+
+    # test out locally
+    # PYTHONPATH=../:. python3 optimization.py	
+
+    # run grading script on buffet
+    # PYTHONPATH=../:. python grade_analysis.py
+		  		    	 		 		   		 		  
