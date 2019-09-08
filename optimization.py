@@ -64,7 +64,7 @@ def optimize_portfolio(sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,1,1), \
     # Get daily portfolio value  		   	  			  	 		  		  		    	 		 		   		 		  
     port_val = daily_sums
     normalized_SPY = prices_SPY / prices_SPY[0]
-  		   	  			  	 		  		  		    	 		 		   		 		  
+
     # Compare daily portfolio value with SPY using a normalized plot  		   	  			  	 		  		  		    	 		 		   		 		  
     if gen_plot:  		   	  			  	 		  		  		    	 		 		   		 		  
         # add code to plot here  
@@ -74,8 +74,8 @@ def optimize_portfolio(sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,1,1), \
         ax.set_ylabel("Price")
 
         plt.grid(linestyle='dotted')
-        plt.savefig('output.png')	   	  			  	 		  		  		    	 		 		   		 		  
-  		   	  			  	 		  		  		    	 		 		   		 		  
+        plt.savefig('output.png')
+
     return optimal_allocs, cr, adr, sddr, sr		  	 		  		  		    	 		 		   		 		  
 
 # returns the cumulative return, average daily return and volatility from a portfolio
@@ -116,23 +116,20 @@ def get_daily_sums(allocs, prices):
 
     return daily_sum	
 
-
-
 def test_code():  		   	  			  	 		  		  		    	 		 		   		 		  
     # This function WILL NOT be called by the auto grader  		   	  			  	 		  		  		    	 		 		   		 		  
     # Do not assume that any variables defined here are available to your function/code  		   	  			  	 		  		  		    	 		 		   		 		  
     # It is only here to help you set up and test your code  		   	  			  	 		  		  		    	 		 		   		 		  
-  		   	  			  	 		  		  		    	 		 		   		 		  
+
     # Define input parameters  		   	  			  	 		  		  		    	 		 		   		 		  
     # Note that ALL of these values will be set to different values by  		   	  			  	 		  		  		    	 		 		   		 		  
     # the autograder!  		   	  			  	 		  		  		    	 		 		   		 		  
 
-    	  		  		    	 		 		   		 		  
     start_date = dt.datetime(2010,1,1)  		   	  			  	 		  		  		    	 		 		   		 		  
     end_date = dt.datetime(2011,1,1)  		   	  			  	 		  		  		    	 		 		   		 		  
     symbols = ['GOOG', 'AAPL', 'GLD', 'XOM', 'IBM']  
     gen_plot = True
-      	
+
 
     """
     # testing out hole filling feature
@@ -148,7 +145,7 @@ def test_code():
     allocations, cr, adr, sddr, sr = optimize_portfolio(sd = start_date, ed = end_date,\
         syms = symbols, \
         gen_plot = gen_plot)
-  		   	  			  	 		  		  		    	 		 		   		 		  
+
     # Print statistics  		   	  			  	 		  		  		    	 		 		   		 		  
     print(f"Start Date: {start_date}")  		   	  			  	 		  		  		    	 		 		   		 		  
     print(f"End Date: {end_date}")  		   	  			  	 		  		  		    	 		 		   		 		  
@@ -158,7 +155,7 @@ def test_code():
     print(f"Volatility (stdev of daily returns): {sddr}")  		   	  			  	 		  		  		    	 		 		   		 		  
     print(f"Average Daily Return: {adr}")  		   	  			  	 		  		  		    	 		 		   		 		  
     print(f"Cumulative Return: {cr}")  		   	  			  	 		  		  		    	 		 		   		 		  
-  		   	  			  	 		  		  		    	 		 		   		 		  
+
 if __name__ == "__main__":  		   	  			  	 		  		  		    	 		 		   		 		  
     # This code WILL NOT be called by the auto grader  		   	  			  	 		  		  		    	 		 		   		 		  
     # Do not assume that it will be called  		   	  			  	 		  		  		    	 		 		   		 		  
@@ -172,4 +169,4 @@ if __name__ == "__main__":
 
     # run grading script on buffet
     # PYTHONPATH=../:. python grade_optimization.py
-		  		    	 		 		   		 		  
+
