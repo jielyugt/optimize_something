@@ -34,7 +34,7 @@ from util import get_data, plot_data
 
 # additional import
 from scipy.optimize import minimize
-  		   	  			  	 		  		  		    	 		 		   		 		  
+
 # This is the function that will be tested by the autograder  		   	  			  	 		  		  		    	 		 		   		 		  
 # The student must update this code to properly implement the functionality  		   	  			  	 		  		  		    	 		 		   		 		  
 def optimize_portfolio(sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,1,1), \
@@ -56,7 +56,7 @@ def optimize_portfolio(sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,1,1), \
     bnds = [(0,1) for _ in range(n)]
     result = minimize(get_sr, init_allocs, method = "SLSQP", constraints = cons, bounds = bnds)
     optimal_allocs = result.x
-    
+
     cr, adr, sddr, sr = get_cr_adr_sddr_sr(optimal_allocs, prices)
     daily_sums = get_daily_sums(optimal_allocs, prices)
 
@@ -125,10 +125,12 @@ def test_code():
     # Note that ALL of these values will be set to different values by  		   	  			  	 		  		  		    	 		 		   		 		  
     # the autograder!  		   	  			  	 		  		  		    	 		 		   		 		  
 
+    """
     start_date = dt.datetime(2010,1,1)  		   	  			  	 		  		  		    	 		 		   		 		  
     end_date = dt.datetime(2011,1,1)  		   	  			  	 		  		  		    	 		 		   		 		  
     symbols = ['GOOG', 'AAPL', 'GLD', 'XOM', 'IBM']  
     gen_plot = True
+    """
 
 
     """
@@ -138,8 +140,13 @@ def test_code():
     end_date = dt.datetime(2003,1,1)  		   	  			  	 		  		  		    	 		 		   		 		  
     symbols = ['WDC', 'AAPL', 'BRCM', 'JNJ', 'IBM']  
     gen_plot = True 
-    """ 			  	 		  		  		    	 		 		   		 		  
+    """
 
+    # report data
+    start_date = dt.datetime(2008,6,1)  		   	  			  	 		  		  		    	 		 		   		 		  
+    end_date = dt.datetime(2009,6,1)  		   	  			  	 		  		  		    	 		 		   		 		  
+    symbols = ["IBM", "X", "GLD", "JPM"]  
+    gen_plot = True		  	 		  		  		    	 		 		   		 		  
 
     # Assess the portfolio  		   	  			  	 		  		  		    	 		 		   		 		  
     allocations, cr, adr, sddr, sr = optimize_portfolio(sd = start_date, ed = end_date,\
