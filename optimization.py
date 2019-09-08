@@ -31,6 +31,9 @@ import matplotlib.pyplot as plt
 import numpy as np  		   	  			  	 		  		  		    	 		 		   		 		  
 import datetime as dt  		   	  			  	 		  		  		    	 		 		   		 		  
 from util import get_data, plot_data
+
+# additional import
+from scipy.optimize import minimize
   		   	  			  	 		  		  		    	 		 		   		 		  
 # This is the function that will be tested by the autograder  		   	  			  	 		  		  		    	 		 		   		 		  
 # The student must update this code to properly implement the functionality  		   	  			  	 		  		  		    	 		 		   		 		  
