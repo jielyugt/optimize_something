@@ -46,6 +46,8 @@ def optimize_portfolio(sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,1,1), \
     prices = prices_all[syms]  # only portfolio symbols  		   	  			  	 		  		  		    	 		 		   		 		  
     prices_SPY = prices_all['SPY']  # only SPY, for comparison later  
 
+    prices = prices.ffill().bfill()
+
     # find the allocations for the optimal portfolio 
     n = len(syms)
     get_sr = lambda allocs: -get_cr_adr_sddr_sr(allocs, prices)[3]
@@ -55,19 +57,26 @@ def optimize_portfolio(sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,1,1), \
     result = minimize(get_sr, init_allocs, method = "SLSQP", constraints = cons, bounds = bnds)
     optimal_allocs = result.x
     
-    cr, adr, sddr, sr = get_cr_adr_sddr_sr(optimal_allocs, prices)    
+    cr, adr, sddr, sr = get_cr_adr_sddr_sr(optimal_allocs, prices)
+    daily_sums = get_daily_sums(optimal_allocs, prices)
 
 
     # Get daily portfolio value  		   	  			  	 		  		  		    	 		 		   		 		  
-    port_val = prices_SPY # add code here to compute daily portfolio values  		   	  			  	 		  		  		    	 		 		   		 		  
+    port_val = daily_sums
+    normalized_SPY = prices_SPY / prices_SPY[0]
   		   	  			  	 		  		  		    	 		 		   		 		  
     # Compare daily portfolio value with SPY using a normalized plot  		   	  			  	 		  		  		    	 		 		   		 		  
     if gen_plot:  		   	  			  	 		  		  		    	 		 		   		 		  
-        # add code to plot here  		   	  			  	 		  		  		    	 		 		   		 		  
-        df_temp = pd.concat([port_val, prices_SPY], keys=['Portfolio', 'SPY'], axis=1)  		   	  			  	 		  		  		    	 		 		   		 		  
-        pass  		   	  			  	 		  		  		    	 		 		   		 		  
+        # add code to plot here  
+        df_temp = pd.concat([port_val, normalized_SPY], keys=['Portfolio', 'SPY'], axis=1)  		   	  			  	 		  		  		    	 		 		   		 		  
+        ax = df_temp.plot(title = "Daily Portfolio Value and SPY", grid = True)
+        ax.set_xlabel("Date")
+        ax.set_ylabel("Price")
+
+        plt.grid(linestyle='dotted')
+        plt.savefig('output.png')	   	  			  	 		  		  		    	 		 		   		 		  
   		   	  			  	 		  		  		    	 		 		   		 		  
-    return optimal_allocs, cr, adr, sddr, sr  		   	  			  	 		  		  		    	 		 		   		 		  
+    return optimal_allocs, cr, adr, sddr, sr		  	 		  		  		    	 		 		   		 		  
 
 # returns the cumulative return, average daily return and volatility from a portfolio
 def get_cr_adr_sddr_sr(allocs, prices):
@@ -117,16 +126,28 @@ def test_code():
     # Define input parameters  		   	  			  	 		  		  		    	 		 		   		 		  
     # Note that ALL of these values will be set to different values by  		   	  			  	 		  		  		    	 		 		   		 		  
     # the autograder!  		   	  			  	 		  		  		    	 		 		   		 		  
-  		   	  			  	 		  		  		    	 		 		   		 		  
-    start_date = dt.datetime(2009,1,1)  		   	  			  	 		  		  		    	 		 		   		 		  
-    end_date = dt.datetime(2010,1,1)  		   	  			  	 		  		  		    	 		 		   		 		  
-    symbols = ['GOOG', 'AAPL', 'GLD', 'XOM', 'IBM']  		   	  			  	 		  		  		    	 		 		   		 		  
 
-    
+    	  		  		    	 		 		   		 		  
+    start_date = dt.datetime(2010,1,1)  		   	  			  	 		  		  		    	 		 		   		 		  
+    end_date = dt.datetime(2011,1,1)  		   	  			  	 		  		  		    	 		 		   		 		  
+    symbols = ['GOOG', 'AAPL', 'GLD', 'XOM', 'IBM']  
+    gen_plot = True
+      	
+
+    """
+    # testing out hole filling feature
+    # e.g. WDC has a missing value at 2002-02-01
+    start_date = dt.datetime(2001,1,1)  		   	  			  	 		  		  		    	 		 		   		 		  
+    end_date = dt.datetime(2003,1,1)  		   	  			  	 		  		  		    	 		 		   		 		  
+    symbols = ['WDC', 'AAPL', 'BRCM', 'JNJ', 'IBM']  
+    gen_plot = True 
+    """ 			  	 		  		  		    	 		 		   		 		  
+
+
     # Assess the portfolio  		   	  			  	 		  		  		    	 		 		   		 		  
     allocations, cr, adr, sddr, sr = optimize_portfolio(sd = start_date, ed = end_date,\
         syms = symbols, \
-        gen_plot = False) 
+        gen_plot = gen_plot)
   		   	  			  	 		  		  		    	 		 		   		 		  
     # Print statistics  		   	  			  	 		  		  		    	 		 		   		 		  
     print(f"Start Date: {start_date}")  		   	  			  	 		  		  		    	 		 		   		 		  
