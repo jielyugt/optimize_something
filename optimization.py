@@ -43,19 +43,13 @@ def optimize_portfolio(sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,1,1), \
     prices = prices_all[syms]  # only portfolio symbols  		   	  			  	 		  		  		    	 		 		   		 		  
     prices_SPY = prices_all['SPY']  # only SPY, for comparison later  
 
-    print("\n=========optimize_portfolio()=====================\n")		   	  			  	 		  		  		    	 		 		   		 		  
-    print(prices_all.head(10))
-    print("\n==================================================\n")	
-
-    
-
     # find the allocations for the optimal portfolio 
 
     # note that the values here ARE NOT meant to be correct for a test case  
     # for debugging purpose		   	  			  	 		  		  		    	 		 		   		 		  
-    allocs = np.asarray([0.3, 0.1, 0.1, 0.3, 0.2]) # add code here to find the allocations  		   	  			  	 		  		  		    	 		 		   		 		  
-    cr, adr, sddr, sr = [0.25, 0.001, 0.0005, 2.1] # add code here to compute stats  		   	  			  	 		  		  		    	 		 		   		 		  
-    daily_returns = get_daily_sums(allocs, prices)
+    #allocs = np.asarray([0.3, 0.1, 0.1, 0.3, 0.2])
+    allocs = np.asarray([0, 0, 1, 0])	    	 		 		   		 		  
+    cr, adr, sddr, sr = get_cr_adr_sddr_sr(allocs, prices)    
 
 
     # Get daily portfolio value  		   	  			  	 		  		  		    	 		 		   		 		  
@@ -69,16 +63,34 @@ def optimize_portfolio(sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,1,1), \
   		   	  			  	 		  		  		    	 		 		   		 		  
     return allocs, cr, adr, sddr, sr  		   	  			  	 		  		  		    	 		 		   		 		  
 
-# short and sweet function that returns the SR from a portfolio
-# for use of tranning specifically
-def get_sr(daily_returns):
-    print("do something")
-
 # returns the cumulative return, average daily return and volatility from a portfolio
-def get_cr_adr_sddr(daily_returns):
+def get_cr_adr_sddr_sr(allocs, prices):
 
+    """
+    # cumulative sum is the same as starting *= (1 + each daily return)
+    curr = 1
+    for each in daily_returns:
+        curr *= 1 + each
+    print("+++++++++++++++++++++", curr - 1)
+    """
 
-    print("do more")
+    daily_sums = get_daily_sums(allocs, prices)
+
+    # cr - cumulative return
+    cr = daily_sums[-1] / daily_sums[0] - 1
+
+    # adr - average daily return
+    daily_returns = daily_sums / daily_sums.shift(1) - 1
+    daily_returns = daily_returns.iloc[1:]
+    adr = daily_returns.mean()
+
+    # sddr - std of daily returns
+    sddr = daily_returns.std()
+
+    # sr - sharpe ratio
+    sr = adr / sddr
+
+    return cr, adr, sddr, sr
 
 # returns the daily returns given stock prices and allocations
 def get_daily_sums(allocs, prices):
@@ -86,16 +98,6 @@ def get_daily_sums(allocs, prices):
     normalized_prices = prices.div(prices.iloc[0])
     allocs_adjusted = normalized_prices.multiply(allocs)
     daily_sum = allocs_adjusted.sum(axis = 1)
-
-    """
-    print("\n=============get_daily_returns====================\n")	
-    print(allocs)	
-    print(normalized_prices.head(10))
-    print(allocs_adjusted.head(10))
-    print(daily_sum.head(10))
-    print(daily_sum[-1])
-    print("\n==================================================\n")
-    """
 
     return daily_sum	
 
@@ -113,11 +115,15 @@ def test_code():
     start_date = dt.datetime(2009,1,1)  		   	  			  	 		  		  		    	 		 		   		 		  
     end_date = dt.datetime(2010,1,1)  		   	  			  	 		  		  		    	 		 		   		 		  
     symbols = ['GOOG', 'AAPL', 'GLD', 'XOM', 'IBM']  		   	  			  	 		  		  		    	 		 		   		 		  
-  		   	  			  	 		  		  		    	 		 		   		 		  
+
+    """
     # Assess the portfolio  		   	  			  	 		  		  		    	 		 		   		 		  
     allocations, cr, adr, sddr, sr = optimize_portfolio(sd = start_date, ed = end_date,\
         syms = symbols, \
-        gen_plot = False)  		   	  			  	 		  		  		    	 		 		   		 		  
+        gen_plot = False) 
+    """ 	
+
+    allocations, cr, adr, sddr, sr = optimize_portfolio() 	   	  			  	 		  		  		    	 		 		   		 		  
   		   	  			  	 		  		  		    	 		 		   		 		  
     # Print statistics  		   	  			  	 		  		  		    	 		 		   		 		  
     print(f"Start Date: {start_date}")  		   	  			  	 		  		  		    	 		 		   		 		  
@@ -137,6 +143,9 @@ if __name__ == "__main__":
     # test out locally
     # PYTHONPATH=../:. python3 optimization.py	
 
+    # run grading script locally
+    # PYTHONPATH=../:. python3 grade_optimization.py
+
     # run grading script on buffet
-    # PYTHONPATH=../:. python grade_analysis.py
+    # PYTHONPATH=../:. python grade_optimization.py
 		  		    	 		 		   		 		  
