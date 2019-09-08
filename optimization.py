@@ -55,7 +55,7 @@ def optimize_portfolio(sd=dt.datetime(2008,1,1), ed=dt.datetime(2009,1,1), \
     # for debugging purpose		   	  			  	 		  		  		    	 		 		   		 		  
     allocs = np.asarray([0.3, 0.1, 0.1, 0.3, 0.2]) # add code here to find the allocations  		   	  			  	 		  		  		    	 		 		   		 		  
     cr, adr, sddr, sr = [0.25, 0.001, 0.0005, 2.1] # add code here to compute stats  		   	  			  	 		  		  		    	 		 		   		 		  
-    daily_returns = get_daily_returns(allocs, prices)
+    daily_returns = get_daily_sums(allocs, prices)
 
 
     # Get daily portfolio value  		   	  			  	 		  		  		    	 		 		   		 		  
@@ -76,25 +76,28 @@ def get_sr(daily_returns):
 
 # returns the cumulative return, average daily return and volatility from a portfolio
 def get_cr_adr_sddr(daily_returns):
+
+
     print("do more")
 
 # returns the daily returns given stock prices and allocations
-def get_daily_returns(allocs, prices):
+def get_daily_sums(allocs, prices):
 
-    cumulative_return = prices.div(prices.iloc[0])
-    allocs_adjusted = cumulative_return.multiply(allocs)
-    daily_returns = allocs_adjusted.sum(axis = 1)
+    normalized_prices = prices.div(prices.iloc[0])
+    allocs_adjusted = normalized_prices.multiply(allocs)
+    daily_sum = allocs_adjusted.sum(axis = 1)
 
     """
     print("\n=============get_daily_returns====================\n")	
     print(allocs)	
-    print(cumulative_return.head(10))
+    print(normalized_prices.head(10))
     print(allocs_adjusted.head(10))
-    print(daily_returns.head(10))
-    print("\n==================================================\n")	
+    print(daily_sum.head(10))
+    print(daily_sum[-1])
+    print("\n==================================================\n")
     """
 
-    return daily_returns	
+    return daily_sum	
 
 
 
